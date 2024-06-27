@@ -8,7 +8,7 @@ data_files = os.listdir("./data")
 file = data_files[0]
 file = f"./data/{file}"
 
-def fetch(_class: str = None, week: str = None, subj: str = None, day: str = None, start: time = None, end: time = None,) -> list:
+def fetch(_class: str = None, week: str = None, subj: str = None, day: str = None, start_t: time = None, end_t: time = None,) -> list:
     connect = sqlite3.connect(file)
     try:
         with open("./src/command.txt", "r") as f:
@@ -16,7 +16,7 @@ def fetch(_class: str = None, week: str = None, subj: str = None, day: str = Non
 
         command = template
 
-        if any(a for a in (_class, week, subj, day, start, end)):
+        if any(a for a in (_class, week, subj, day, start_t, end_t)):
             command += "WHERE "
             params = []
             values = []
@@ -37,13 +37,13 @@ def fetch(_class: str = None, week: str = None, subj: str = None, day: str = Non
             params.append(f"week_day LIKE ?")
             values.append(day)
 
-        if start:
-            params.append(f"start_time LIKE ?")
-            values.append(start.strftime('%-H:%M'))
+        if start_t:
+            params.append(f"start_t_time LIKE ?")
+            values.append(start_t.strftime('%-H:%M'))
 
-        if end:
+        if end_t:
             params.append(f"end_time LIKE ?")
-            values.append(end.strftime('%-H:%M'))
+            values.append(end_t.strftime('%-H:%M'))
 
         command += " AND ".join(params)
         
