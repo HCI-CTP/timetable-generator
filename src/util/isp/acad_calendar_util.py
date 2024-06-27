@@ -1,3 +1,5 @@
+import asyncio
+
 from urllib.parse import urlencode
 import requests
 
@@ -9,19 +11,12 @@ import json
 
 cal_url = "https://isphs.hci.edu.sg/curriculum/acadcalendar.asp"
 
-def get_cookies():
-    cookies = None
-
-    with open("./secrets/cookies.json", "r") as f:
-        cookies = f.read()
-
-    cookies = json.loads(cookies)
-    cookies = {c["name"]: c["value"] for c in cookies}
-
-    return cookies
+from isp_util import get_cookies
 
 def get_soup(url):
-    cookies = get_cookies()
+    cookie_data = asyncio.run(get_cookies())
+
+    cookies = {d["name"]: d["value"] for d in cookie_data}
 
     r = requests.get(
         url=url,
@@ -99,4 +94,5 @@ def get_acad_calendar(year: int, term: int) -> dict:
 
     return week_to_date
 
-print(get_acad_calendar(2024, 3))
+if __name__ == "__main__":
+    print(get_acad_calendar(2024, 3))
