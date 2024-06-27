@@ -26,16 +26,6 @@ JSON File for authentication and retrieval of cookies
 }
 ```
 
-#### `isphs-auth.json`
-JSON File for authentication and retrieval of cookies
-
-```json
-{
-    "username": <your username>,
-    "password": <your password>
-}
-```
-
 #### `service-credentials.json`
 Contact me to create a service account to use the Google Calendar. 
 
