@@ -11,7 +11,7 @@ import json
 
 cal_url = "https://isphs.hci.edu.sg/curriculum/acadcalendar.asp"
 
-from isp_util import get_cookies
+from util.isp.isp_util import get_cookies
 
 def get_soup(url):
     cookie_data = asyncio.run(get_cookies())
