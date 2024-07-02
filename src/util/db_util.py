@@ -8,7 +8,7 @@ data_files = os.listdir("./data")
 file = data_files[0]
 file = f"./data/{file}"
 
-def fetch(_class: str = None, week: str = None, subj: str = None, day: str = None, start_t: time = None, end_t: time = None,) -> list:
+def fetch_data(_class: str = None, week: str = None, subj: str = None, day: str = None, start_t: time = None, end_t: time = None,) -> list:
     connect = sqlite3.connect(file)
     try:
         with open("./src/command.txt", "r") as f:

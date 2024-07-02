@@ -8,7 +8,7 @@ from playwright.async_api import async_playwright
 
 from datetime import datetime
 
-from isp_util import get_cookies
+from util.isp.isp_util import get_cookies
 
 cal_url = "https://isphs.hci.edu.sg/eventcalendar.asp"
 
@@ -16,7 +16,7 @@ async def get_playwright(url):
     cookies = await get_cookies()
 
     p = await async_playwright().start()
-    browser = await p.chromium.launch(headless=False)
+    browser = await p.chromium.launch(headless=True)
     context = await browser.new_context()
 
     await context.add_cookies(cookies=cookies)
