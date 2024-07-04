@@ -18,3 +18,8 @@ from util.db_util import *
 # event tests
 
 # db tests
+
+lst = list_calendar()
+cal = lst["items"][0]
+
+clear_calendar_events(cal_id=cal["id"])

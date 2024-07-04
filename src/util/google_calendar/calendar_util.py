@@ -1,7 +1,5 @@
 from util.google_calendar.api_util import *
 
-import datetime
-
 def create_calendar(title: str, desc: str = None) -> dict:
     service = get_service()
 
@@ -42,14 +40,31 @@ def update_calendar(cal_id: str, body: dict) -> dict:
 def delete_calendar(cal_id: str) -> None:
     service = get_service()
     
-    service.calendarList().delete(calendarId=cal_id).execute()
+    service.calendars().delete(calendarId=cal_id).execute()
 
-def clear_calendar() -> None:
+def clear_calendar_list() -> None:
     cal_lst = list_calendar()
 
     for cal in cal_lst["items"]:
         cal_id = cal["id"]
         delete_calendar(cal_id=cal_id)
+
+def list_calendar_events(cal_id: str) -> list:
+    service = get_service()
+    calendar = service.events().list(calendarId=cal_id).execute()
+
+    return calendar["items"]
+
+def delete_calendar_events(cal_id: str, event_id: str) -> None:
+    service = get_service()
+
+    service.events().delete(calendarId=cal_id, eventId=event_id).execute()
+
+def clear_calendar_events(cal_id: str) -> None:
+    events = list_calendar_events(cal_id=cal_id)
+
+    for e in events:
+        delete_calendar_events(cal_id=cal_id, event_id=e["id"])    
 
 if __name__ == "__main__":
     service = get_service()
