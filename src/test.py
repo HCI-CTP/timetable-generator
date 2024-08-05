@@ -7,7 +7,7 @@ from util.google_calendar.calendar_util import *
 from util.isp.acad_calendar_util import *
 from util.isp.event_calendar_util import *
 
-from util.db_util import *
+from util.db.db_util import *
 
 # api tests
 
@@ -19,7 +19,7 @@ from util.db_util import *
 
 # db tests
 
-lst = list_calendar()
-cal = lst["items"][0]
+odd_cal = list_calendar()["items"][0]
+odd_events = list_calendar_events(cal_id=odd_cal["id"])
 
-clear_calendar_events(cal_id=cal["id"])
+print(odd_events[0])

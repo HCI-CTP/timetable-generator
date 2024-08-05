@@ -27,3 +27,9 @@ def list_event_colour() -> dict:
 # 9 : dark blue
 # 10 : dark green
 # 11 : red
+
+colour_combinations = [
+    (9, 1, 8),
+    (9, 10, 3),
+    
+]

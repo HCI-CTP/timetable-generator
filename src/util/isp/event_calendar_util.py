@@ -28,7 +28,7 @@ async def get_playwright(url):
 
     return p, browser, context, page
 
-async def get_event_calendar(year: int, month: int) -> dict:
+async def get_event_calendar(year: int, month: int) -> list:
     if month not in range(1, 13):
         raise ValueError(f"Invalid Month provided : {month}")
 

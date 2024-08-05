@@ -13,7 +13,7 @@ from util.google_calendar.colour_util import *
 from util.isp.acad_calendar_util import get_acad_calendar
 from util.isp.event_calendar_util import get_event_calendar
 
-from util.db_util import *
+from util.db.db_util import *
 
 from tqdm import tqdm
 
@@ -45,25 +45,28 @@ subj_lst = [s for s in all_subj_lst if ("".join(re.findall("[A-Za-z]", s)).isupp
 break_lst = ["Recess", "Lunch"]
 non_subj_lst = [s for s in all_subj_lst if s not in subj_lst]
 
-clear_calendar_list()
-odd_cal = create_calendar(title="4A3 T2 (Odd)", desc="test")
+odd_cal = list_calendar()["items"][0]
+odd_events = list_calendar_events(cal_id=odd_cal["id"])
+# clear_calendar_events(cal_id=odd_cal["id"])
+
+# odd_cal = create_calendar(title="4A3 T2 (Odd)", desc="test")
 # even_cal = create_calendar(title="4A3 T2 (Even)", desc="test")
 
-odd_acl = insert_acl(cal_id=odd_cal["id"], scope="user", email="chongchoonhourafael@gmail.com", role="owner")
+# odd_acl = insert_acl(cal_id=odd_cal["id"], scope="user", email="chongchoonhourafael@gmail.com", role="owner")
 # even_acl = insert_acl(cal_id=even_cal["id"], scope="user", email="chongchoonhourafael@gmail.com", role="owner")
 
-subj_colour = "10"
-
-for idx, d in enumerate(tqdm(odd_data)):
-    if d["title"] in subj_lst:
-        colour = "9" if subj_colour == "10" else "10"
-        subj_colour = "10" if colour == "10" else "9"
-    elif d["title"] in break_lst:
-        colour = "2"
+for idx, d in enumerate(tqdm(odd_events)):
+    if d["summary"] in subj_lst:
+        colour = "9"
+    elif d["summary"] in break_lst:
+        colour = "10"
     else:
-        colour = "1"    
+        colour = "3"
 
-    event = create_event(cal_id=odd_cal["id"], title=d["title"], start_dt=d["start"], end_dt=d["end"], colour=colour)
+    if colour != d["colorId"]:
+        event = update_event(cal_id=odd_cal["id"], event_id=d["id"], colour=colour)
+
+    # event = create_event(cal_id=odd_cal["id"], title=d["title"], start_dt=d["start"], end_dt=d["end"], colour=colour)
 
 # for d in tqdm(even_data):
 #     event = create_event(cal_id=even_cal["id"], title=d["title"], start_dt=d["start"], end_dt=d["end"], colour=subj_to_colour[d["title"]])
