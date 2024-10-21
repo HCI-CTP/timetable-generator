@@ -1,3 +1,5 @@
+from tqdm import tqdm
+
 from util.google_calendar.api_util import *
 
 def create_calendar(title: str, desc: str = None) -> dict:
@@ -45,15 +47,25 @@ def delete_calendar(cal_id: str) -> None:
 def clear_calendar_list() -> None:
     cal_lst = list_calendar()
 
-    for cal in cal_lst["items"]:
+    for cal in tqdm(cal_lst["items"]):
         cal_id = cal["id"]
         delete_calendar(cal_id=cal_id)
 
 def list_calendar_events(cal_id: str) -> list:
     service = get_service()
-    calendar = service.events().list(calendarId=cal_id).execute()
+    event_lst = []
 
-    return calendar["items"]
+    page_token = None
+    while True:
+        events = service.events().list(calendarId=cal_id, pageToken=page_token).execute()
+        
+        event_lst += events["items"]
+        page_token = events.get('nextPageToken')
+        
+        if not page_token:
+            break
+
+    return event_lst
 
 def delete_calendar_events(cal_id: str, event_id: str) -> None:
     service = get_service()
@@ -63,7 +75,7 @@ def delete_calendar_events(cal_id: str, event_id: str) -> None:
 def clear_calendar_events(cal_id: str) -> None:
     events = list_calendar_events(cal_id=cal_id)
 
-    for e in events:
+    for e in tqdm(events):
         delete_calendar_events(cal_id=cal_id, event_id=e["id"])    
 
 if __name__ == "__main__":
